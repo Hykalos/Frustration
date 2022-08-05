@@ -2,8 +2,36 @@
 
 public class Player
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public uint CurrentScore { get; set; }
-    public uint CurrentTask { get; set; }
+    public Player(string name)
+    {
+        Name = name;
+        Id = Guid.NewGuid();
+        CurrentScore = 0;
+        CurrentTask = 1;
+    }
+
+    public Guid Id { get; }
+    public string Name { get; }
+    public uint CurrentScore { get; private set; }
+    public uint CurrentTask { get; private set; }
+
+    public void IncrementScore(uint points)
+    {
+        CurrentScore += points;
+    }
+
+    public void DecrementScore(uint points)
+    {
+        CurrentScore -= points;
+    }
+
+    public void CompleteTask()
+    {
+        ++CurrentTask;
+    }
+
+    public void CancelTaskCompletion()
+    {
+        --CurrentTask;
+    }
 }

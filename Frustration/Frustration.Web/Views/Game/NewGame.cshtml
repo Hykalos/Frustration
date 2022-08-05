@@ -1,0 +1,17 @@
+﻿<h1>Start nyt spil</h1>
+
+<form method="post" asp-action="StartNewGame">
+    <div class="mb-3">
+        <label class="form-label">Navne på deltagerne</label>
+        <input type="text" class="form-control" name="playerNames[0]" placeholder="Indtast navn" required />
+        <input type="text" class="form-control" name="playerNames[1]" placeholder="Indtast navn" required />
+        <input type="text" class="form-control" name="playerNames[2]" placeholder="Indtast navn" required />
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="track-points" name="trackPoints" />
+        <label class="form-check-label" for="track-points">Spil med point</label>
+    </div>
+
+    <input type="submit" class="btn-primary btn" value="Start spil" />
+</form>

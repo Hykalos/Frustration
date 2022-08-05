@@ -6,7 +6,7 @@ public interface IGameService
     /// Start a new game of Frustration
     /// </summary>
     /// <param name="players">The list of player names</param>
-    Game StartNewGame(IEnumerable<string> players);
+    Game StartNewGame(IEnumerable<string> players, bool trackPoints);
 
     /// <summary>
     /// Complete a round
