@@ -3,10 +3,12 @@
 public sealed class GameController : Controller
 {
     private readonly IGameService _gameService;
+    private readonly GameStorage _gameStorage;
 
-    public GameController(IGameService gameService)
+    public GameController(IGameService gameService, GameStorage gameStorage)
     {
         _gameService = gameService;
+        _gameStorage = gameStorage;
     }
 
     public IActionResult NewGame()
@@ -19,13 +21,15 @@ public sealed class GameController : Controller
     {
         var game = _gameService.StartNewGame(playerNames, trackPoints?.Equals("on", StringComparison.InvariantCultureIgnoreCase) ?? false);
 
-        //TODO: store game state
+        _gameStorage.StoreGame(game, Response.Cookies);
         
         return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Index()
     {
-        return View();
+        var game = _gameStorage.LoadGame(Request);
+
+        return View(game);
     }
 }
