@@ -1,0 +1,39 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: Publish web app
+    environment: Production
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Clean
+      run: dotnet clean ./Frustration/Frustration.Web/Frustration.Web.csproj --configuration Release && dotnet nuget locals all --clear
+
+    - name: Install dependencies
+      run: dotnet restore ./Frustration/Frustration.Web/Frustration.Web.csproj
+
+    - name: Build
+      run: dotnet build ./Frustration/Frustration.Web/Frustration.Web.csproj --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish ./Frustration/Frustration.Web/Frustration.Web.csproj -c Release -o ./output
+
+    - name: 'Publish to app service'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ secrets.AZURE_WEBAPP_PRODUCTION_NAME }}
+        package: './output'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PRODUCTION_PUBLISH_PROFILE }}
