@@ -1,0 +1,32 @@
+﻿@model Game
+@{
+    ViewData["Title"] = "Igangværende spil";
+}
+
+<h1>Frustration</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Nuværende opgave</th>
+            @if(Model.TrackPoints)
+            {
+                <th>Point</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var player in Model.Players.OrderBy(p => p.Name))
+        {
+            <tr>
+                <td>@player.Name</td>
+                <td>@player.CurrentTask</td>
+                @if(Model.TrackPoints)
+                {
+                    <td>@player.CurrentScore</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

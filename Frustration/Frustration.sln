@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frustration.Web", "Frustration.Web\Frustration.Web.csproj", "{359E707F-F665-427D-9816-BD6463EF7B66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frustration.Web", "Frustration.Web\Frustration.Web.csproj", "{359E707F-F665-427D-9816-BD6463EF7B66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frustration.Domain", "Frustration.Domain\Frustration.Domain.csproj", "{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frustration.BusinessLogic", "Frustration.BusinessLogic\Frustration.BusinessLogic.csproj", "{AABB7A91-9F46-4612-8288-E3342761DEA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{359E707F-F665-427D-9816-BD6463EF7B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{359E707F-F665-427D-9816-BD6463EF7B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{359E707F-F665-427D-9816-BD6463EF7B66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

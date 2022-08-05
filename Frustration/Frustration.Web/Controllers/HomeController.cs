@@ -1,32 +1,27 @@
-﻿using Frustration.Web.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿namespace Frustration.Web.Controllers;
 
-namespace Frustration.Web.Controllers
+public sealed class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly GameStorage _gameStorage;
+
+    public HomeController(GameStorage gameStorage)
     {
-        private readonly ILogger<HomeController> _logger;
+        _gameStorage = gameStorage;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    public IActionResult Index()
+    {
+        var viewModel = new HomeIndexViewModel
         {
-            _logger = logger;
-        }
+            GameExists = _gameStorage.GameExists(Request)
+        };
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View(viewModel);
+    }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

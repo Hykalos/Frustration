@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Start nyt spil";
+}
+
+<h1>Start nyt spil</h1>
+
+<form method="post" asp-action="StartNewGame">
+    <div class="mb-3">
+        <label class="form-label">Navne på deltagerne</label>
+        <input type="text" class="form-control" name="playerNames[0]" id="player-name-0" placeholder="Indtast navn" required />
+
+        <div class="btn-group" role="group" style="margin-top: 20px;">
+            <button class="btn-success btn" id="add-player-button">Tilføj spiller</button>
+            <button class="btn-danger btn" id="remove-player-button">Fjern spiller</button>
+        </div>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="track-points" name="trackPoints" />
+        <label class="form-check-label" for="track-points">Spil med point</label>
+    </div>
+
+    <input type="submit" class="btn-success btn" value="Start spil" />
+</form>
+
+@section scripts {
+    <script type="text/javascript">
+        $(function() {
+            let latestPlayerId = 0;
+
+            $('#add-player-button').on('click', function(e) {
+                e.preventDefault();
+
+                var latestInput = $('#player-name-' + latestPlayerId);
+
+                var newInput = latestInput.clone();
+                newInput.attr('id', 'player-name-' + ++latestPlayerId);
+                newInput.attr('name', 'playerNames[' + latestPlayerId + ']');
+                newInput.val('');
+
+                newInput.insertAfter(latestInput);
+            });
+
+            $('#remove-player-button').on('click', function(e) {
+                e.preventDefault();
+
+                if (latestPlayerId === 0)
+                    return;
+
+                var inputToRemove = $('#player-name-' + latestPlayerId--);
+
+                inputToRemove.remove();
+            });
+        });
+
+    </script>
+}
