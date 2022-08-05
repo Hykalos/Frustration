@@ -5,9 +5,11 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frustration.Web", "Frustration.Web\Frustration.Web.csproj", "{359E707F-F665-427D-9816-BD6463EF7B66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frustration.Domain", "Frustration.Domain\Frustration.Domain.csproj", "{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frustration.Domain", "Frustration.Domain\Frustration.Domain.csproj", "{01C1EF6C-1ECC-4125-A517-C44026FA2CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frustration.BusinessLogic", "Frustration.BusinessLogic\Frustration.BusinessLogic.csproj", "{AABB7A91-9F46-4612-8288-E3342761DEA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frustration.BusinessLogic", "Frustration.BusinessLogic\Frustration.BusinessLogic.csproj", "{AABB7A91-9F46-4612-8288-E3342761DEA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frustration.BusinessLogic.Tests", "Frustration.BusinessLogic.Tests\Frustration.BusinessLogic.Tests.csproj", "{08BB9D5A-04BB-4E1B-9800-B15B2C402364}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AABB7A91-9F46-4612-8288-E3342761DEA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08BB9D5A-04BB-4E1B-9800-B15B2C402364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08BB9D5A-04BB-4E1B-9800-B15B2C402364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08BB9D5A-04BB-4E1B-9800-B15B2C402364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08BB9D5A-04BB-4E1B-9800-B15B2C402364}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
