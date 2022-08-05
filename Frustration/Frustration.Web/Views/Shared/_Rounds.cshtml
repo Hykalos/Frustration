@@ -1,0 +1,46 @@
+﻿@{
+    var rounds = new List<string>
+    {
+        "2 x 3 ens",
+        "2 x 3 på stribe",
+        "3 ens og 4 på stribe",
+        "2 x 4 ens",
+        "3 ens og 5 på stribe",
+        "3 x 3 ens",
+        "3 x 3 på stribe",
+        "5 par, der må bruges 1 vildt kort",
+        "7 på stribe",
+        "2 x 5 ens",
+        "5 ens og 5 på stribe",
+        "3 ens og 6 på stribe",
+        "2 x 4 på stribe i samme kulør",
+        "9 på stribe",
+        "2 par, 3 ens og 4 ens",
+        "7 ens og 3 ens",
+        "2 x 3 på stribe og 4 på stribe",
+        "2 x 5 på stribe i forskellig kulør",
+        "8 ens og 3 ens",
+        "11 på stribe"
+    };
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Runde</th>
+            <th>Opgave</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            uint index = 0;
+        }
+        @foreach(var round in rounds)
+        {
+            <tr>
+                <td>@(++index).</td>
+                <td>@round</td>
+            </tr>
+        }
+    </tbody>
+</table>
