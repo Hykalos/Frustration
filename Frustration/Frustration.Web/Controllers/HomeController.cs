@@ -2,16 +2,21 @@
 
 public sealed class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly GameStorage _gameStorage;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(GameStorage gameStorage)
     {
-        _logger = logger;
+        _gameStorage = gameStorage;
     }
 
     public IActionResult Index()
     {
-        return View();
+        var viewModel = new HomeIndexViewModel
+        {
+            GameExists = _gameStorage.GameExists(Request)
+        };
+
+        return View(viewModel);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

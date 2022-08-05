@@ -1,8 +1,15 @@
-﻿@{
+﻿@model HomeIndexViewModel
+@{
     ViewData["Title"] = "Startside";
 }
 
 <div class="text-center">
     <h1 class="display-4">Frustration</h1>
     <a class="btn-primary btn" asp-controller="Game" asp-action="NewGame">Start nyt spil</a>
+
+    @if(Model.GameExists)
+    {
+        <h2>Fortsat igangværende spil</h2>
+        <a class="btn-primary btn" asp-controller="Game" asp-action="Index">Fortsæt igangværende spil</a>
+    }
 </div>

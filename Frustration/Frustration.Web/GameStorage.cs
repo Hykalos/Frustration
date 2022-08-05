@@ -19,6 +19,8 @@ public sealed class GameStorage
         });
     }
 
+    public bool GameExists(HttpRequest request) => request.Cookies[GameKey] != null;
+
     public Game? LoadGame(HttpRequest request)
     {
         var cookie = request.Cookies[GameKey];
