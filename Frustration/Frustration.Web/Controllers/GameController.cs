@@ -17,7 +17,7 @@ public sealed class GameController : Controller
     [HttpPost]
     public IActionResult StartNewGame([FromForm] IEnumerable<string> playerNames, [FromForm] string trackPoints)
     {
-        var game = _gameService.StartNewGame(playerNames, trackPoints.Equals("on", StringComparison.InvariantCultureIgnoreCase));
+        var game = _gameService.StartNewGame(playerNames, trackPoints?.Equals("on", StringComparison.InvariantCultureIgnoreCase) ?? false);
 
         //TODO: store game state
         
