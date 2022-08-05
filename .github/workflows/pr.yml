@@ -23,7 +23,7 @@ jobs:
       run: dotnet clean ./Frustration/Frustration.sln --configuration Release && dotnet nuget locals all --clear
 
     - name: Restore
-      run: dotnet restore ./Frustration/Frustration.sln --configuration Release
+      run: dotnet restore ./Frustration/Frustration.sln
 
     - name: Build
       run: dotnet build ./Frustration/Frustration.sln --configuration Release --no-restore
