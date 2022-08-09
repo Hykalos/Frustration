@@ -56,18 +56,46 @@ public class GameServiceTests
     }
 
     [Test]
-    public void CompleteRoundWrongCountPlayerPointsThrowsError()
+    public void CompleteRoundWrongPlayerCountThrowsError()
     {
-        Assert.Throws<ArgumentException>(() => _gameService.CompleteRound(_game, _game.Players.Select(p => p.Id), new List<(Guid, uint)>
+        Assert.Throws<ArgumentException>(() => _gameService.CompleteRound(_game, new List<PlayerRoundInfo>
         {
-            (_game.Players.First().Id, 420)
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(0).Id,
+                CompletedTask = true,
+                Score = 45
+            }
         }));
     }
 
     [Test]
     public void CompleteRoundNoCompletedTasksThrowsError()
     {
-        Assert.Throws<ArgumentException>(() => _gameService.CompleteRound(_game, Enumerable.Empty<Guid>(), GenerateValidPoints(_game)));
+        var playerRoundInfo = new List<PlayerRoundInfo>
+        {
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(0).Id,
+                CompletedTask = false,
+                Score = 45
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(1).Id,
+                CompletedTask = false,
+                Score = 45
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(2).Id,
+                CompletedTask = false,
+                Score = 45
+            }
+        };
+
+
+        Assert.Throws<ArgumentException>(() => _gameService.CompleteRound(_game, playerRoundInfo));
     }
 
     [Test]
@@ -77,20 +105,36 @@ public class GameServiceTests
         var player2CurrentTask = _game.Players.ElementAt(1).CurrentTask;
         var player3CurrentTask = _game.Players.ElementAt(2).CurrentTask;
 
-        var completedRound = new List<Guid>
+        var playerRoundInfo = new List<PlayerRoundInfo>
         {
-            _game.Players.ElementAt(0).Id,
-            _game.Players.ElementAt(2).Id
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(0).Id,
+                CompletedTask = true,
+                Score = 45
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(1).Id,
+                CompletedTask = false,
+                Score = 45
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(2).Id,
+                CompletedTask = true,
+                Score = 45
+            }
         };
 
 
-        var newGameState = _gameService.CompleteRound(_game, completedRound, GenerateValidPoints(_game));
+        var game = _gameService.CompleteRound(_game, playerRoundInfo);
 
         Assert.Multiple(() =>
         {
-            Assert.That(_game.Players.ElementAt(0).CurrentTask, Is.EqualTo(player1CurrentTask + 1));
-            Assert.That(_game.Players.ElementAt(1).CurrentTask, Is.EqualTo(player2CurrentTask));
-            Assert.That(_game.Players.ElementAt(2).CurrentTask, Is.EqualTo(player3CurrentTask + 1));
+            Assert.That(game.Players.ElementAt(0).CurrentTask, Is.EqualTo(player1CurrentTask + 1));
+            Assert.That(game.Players.ElementAt(1).CurrentTask, Is.EqualTo(player2CurrentTask));
+            Assert.That(game.Players.ElementAt(2).CurrentTask, Is.EqualTo(player3CurrentTask + 1));
         });
     }
 
@@ -101,42 +145,40 @@ public class GameServiceTests
         var player2CurrentScore = _game.Players.ElementAt(1).CurrentScore;
         var player3CurrentScore = _game.Players.ElementAt(2).CurrentScore;
 
-        var completedRound = new List<Guid>
-        {
-            _game.Players.ElementAt(0).Id,
-            _game.Players.ElementAt(2).Id
-        };
-
         const uint player1Score = 155;
-        const uint player2Score = 155;
-        const uint player3Score = 155;
-        var scores = new List<(Guid, uint)>
+        const uint player2Score = 420;
+        const uint player3Score = 0;
+
+        var playerRoundInfo = new List<PlayerRoundInfo>
         {
-            (_game.Players.ElementAt(0).Id, player1Score),
-            (_game.Players.ElementAt(1).Id, player2Score),
-            (_game.Players.ElementAt(2).Id, player3Score)
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(0).Id,
+                CompletedTask = true,
+                Score = player1Score
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(1).Id,
+                CompletedTask = false,
+                Score = player2Score
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(2).Id,
+                CompletedTask = true,
+                Score = player3Score
+            }
         };
 
 
-        var newGameState = _gameService.CompleteRound(_game, completedRound, scores);
+        var newGameState = _gameService.CompleteRound(_game, playerRoundInfo);
 
         Assert.Multiple(() =>
         {
-            Assert.That(_game.Players.ElementAt(0).CurrentScore, Is.EqualTo(player1CurrentScore + player1Score));
-            Assert.That(_game.Players.ElementAt(1).CurrentScore, Is.EqualTo(player2CurrentScore + player2Score));
-            Assert.That(_game.Players.ElementAt(2).CurrentScore, Is.EqualTo(player3CurrentScore + player3Score));
+            Assert.That(newGameState.Players.ElementAt(0).CurrentScore, Is.EqualTo(player1CurrentScore + player1Score));
+            Assert.That(newGameState.Players.ElementAt(1).CurrentScore, Is.EqualTo(player2CurrentScore + player2Score));
+            Assert.That(newGameState.Players.ElementAt(2).CurrentScore, Is.EqualTo(player3CurrentScore + player3Score));
         });
-    }
-
-    private static IEnumerable<(Guid, uint)> GenerateValidPoints(Game game)
-    {
-        var points = new List<(Guid, uint)>();
-
-        foreach(var player in game.Players)
-        {
-            points.Add((player.Id, 45));
-        }
-
-        return points;
     }
 }

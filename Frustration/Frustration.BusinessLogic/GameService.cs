@@ -2,36 +2,35 @@
 
 public class GameService : IGameService
 {
-    public Game CompleteRound(Game currentGame, IEnumerable<Guid> playerCompletedRoundIds, IEnumerable<(Guid playerId, uint points)>? points)
+    public Game CompleteRound(Game currentGame, IEnumerable<PlayerRoundInfo> playerRoundInfo)
     {
-        if (!playerCompletedRoundIds.Any())
-            throw new ArgumentException("No players completed the round. At least one player has to complete the round.", nameof(playerCompletedRoundIds));
+        if (!playerRoundInfo.Any(p => p.CompletedTask))
+            throw new ArgumentException("No players completed the round. At least one player has to complete the round.", nameof(playerRoundInfo));
+
+        if (playerRoundInfo.Count() != currentGame.Players.Count())
+            throw new ArgumentException("Player count didn't match player round info count");
+
+        if (playerRoundInfo.Any(p => !currentGame.Players.Select(player => player.Id).Contains(p.PlayerId)))
+            throw new ArgumentException("Info were given to a player who isn't part of the current game", nameof(playerRoundInfo));
 
         if (currentGame.TrackPoints)
         {
-            if (points == null)
-                throw new ArgumentException("Points should be included", nameof(points));
+            if (playerRoundInfo.Any(p => p.Score == null))
+                throw new ArgumentException("Points should be included", nameof(playerRoundInfo));
 
-            if(points.Any(p => p.points % 5 != 0))
-                throw new ArgumentException("Points were not correct. Points should always be a multiple of 5", nameof(points));
-
-            if (points.Count() != currentGame.Players.Count())
-                throw new ArgumentException("Points are missing for 1 or more players", nameof(points));
-
-            if (points.Any(p => !currentGame.Players.Select(player => player.Id).Contains(p.playerId)))
-                throw new ArgumentException("Points were given to a player who isn't part of the current game", nameof(points));
-
-            foreach (var p in currentGame.Players)
-            {
-                var score = points.Single(s => s.playerId.Equals(p.Id));
-
-                p.IncrementScore(score.points);
-            }
+            if(playerRoundInfo.Any(p => p.Score % 5 != 0))
+                throw new ArgumentException("Points were not correct. Points should always be a multiple of 5", nameof(playerRoundInfo));
         }
 
-        foreach(var player in currentGame.Players.Where(p => playerCompletedRoundIds.Contains(p.Id)))
+        foreach(var player in currentGame.Players)
         {
-            player.CompleteTask();
+            var roundInfo = playerRoundInfo.Single(p => p.PlayerId.Equals(player.Id));
+
+            if(roundInfo.CompletedTask)
+                player.CompleteTask();
+
+            if (currentGame.TrackPoints)
+                player.IncrementScore(roundInfo.Score.Value);
         }
 
         return currentGame;

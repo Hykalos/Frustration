@@ -2,19 +2,13 @@
 
 public class Round
 {
-    public Round(IEnumerable<Guid> completedRound)
+    public Round(IEnumerable<PlayerRoundInfo> playerRoundInfo)
     {
-        if (!completedRound.Any())
+        if (!playerRoundInfo.Any())
             throw new ArgumentException("At least one player has to complete the round");
 
-        CompletedRound = completedRound;
+        PlayerRoundInfo = playerRoundInfo;
     }
 
-    public Round(IEnumerable<Guid> completedRound, IDictionary<Guid, uint> points) : this(completedRound)
-    {
-        Points = points;
-    }
-
-    public IEnumerable<Guid> CompletedRound { get; set; }
-    public IDictionary<Guid, uint> Points { get; set; } = new Dictionary<Guid, uint>();
+    public IEnumerable<PlayerRoundInfo> PlayerRoundInfo { get; set; } = Enumerable.Empty<PlayerRoundInfo>();
 }

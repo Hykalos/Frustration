@@ -32,4 +32,12 @@ public sealed class GameController : Controller
 
         return View(game);
     }
+
+    [HttpPost]
+    public IActionResult CompleteRound([FromForm] IEnumerable<Guid> completedRounds, [FromForm] IEnumerable<PlayerRoundInfo> roundInfo)
+    {
+
+
+        return Redirect(nameof(Index));
+    }
 }

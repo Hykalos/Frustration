@@ -12,8 +12,7 @@ public interface IGameService
     /// Complete a round
     /// </summary>
     /// <param name="currentGame">The current state of the game</param>
-    /// <param name="playerCompletedRoundIds">ID's of the players who completed the round</param>
-    /// <param name="points">The points gained for each player (optional)</param>
+    /// <param name="playerRoundInfo">Info for each player for the round</param>
     /// <exception cref="ArgumentException"></exception>
-    Game CompleteRound(Game currentGame, IEnumerable<Guid> playerCompletedRoundIds, IEnumerable<(Guid playerId, uint points)>? points);
+    Game CompleteRound(Game currentGame, IEnumerable<PlayerRoundInfo> playerRoundInfo);
 }
