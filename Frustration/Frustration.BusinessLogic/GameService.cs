@@ -33,6 +33,8 @@ public class GameService : IGameService
                 player.IncrementScore(roundInfo.Score.Value);
         }
 
+        currentGame.Rounds.Push(new Round(playerRoundInfo));
+
         return currentGame;
     }
 

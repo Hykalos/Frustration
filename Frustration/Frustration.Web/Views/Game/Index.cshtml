@@ -55,17 +55,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var player in Model.Players)
+                            @for(var i = 0; i < Model.Players.Count(); ++i)
                             {
+                                var player = Model.Players.ElementAt(i);
+
+                                <input type="hidden" name="roundInfo[@i].PlayerId" value="@player.Id" />
+
                                 <tr>
                                     <td>@player.Name</td>
                                     <td>
-
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="track-points-@i" name="roundInfo[@i].CompletedTaskSwitch" />
+                                            <label class="form-check-label" for="track-points-@i">Gennemførte runden</label>
+                                        </div>
                                     </td>
+                                    @if(Model.TrackPoints)
+                                    {
+                                        <td>
+                                            <input type="number" name="roundInfo[@i].Score" step="5" min="0" class="form-control" required placeholder="Point for @player.Name" />
+                                        </td>
+                                    }
                                 </tr>
                             }
                         </tbody>
                     </table>
+
+                    <input class="btn-success btn" type="submit" value="Gem" />
                 </form>
             </div>
 

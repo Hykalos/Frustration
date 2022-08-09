@@ -10,10 +10,10 @@ public class Player
         CurrentTask = 1;
     }
 
-    public Guid Id { get; }
-    public string Name { get; }
-    public uint CurrentScore { get; private set; }
-    public uint CurrentTask { get; private set; }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public uint CurrentScore { get; set; }
+    public uint CurrentTask { get; set; }
 
     public void IncrementScore(uint points)
     {
