@@ -17,11 +17,24 @@ public class GameService : IGameService
 
             if (points.Count() != currentGame.Players.Count())
                 throw new ArgumentException("Points are missing for 1 or more players", nameof(points));
+
+            if (points.Any(p => !currentGame.Players.Select(player => player.Id).Contains(p.playerId)))
+                throw new ArgumentException("Points were given to a player who isn't part of the current game", nameof(points));
+
+            foreach (var p in currentGame.Players)
+            {
+                var score = points.Single(s => s.playerId.Equals(p.Id));
+
+                p.IncrementScore(score.points);
+            }
         }
 
+        foreach(var player in currentGame.Players.Where(p => playerCompletedRoundIds.Contains(p.Id)))
+        {
+            player.CompleteTask();
+        }
 
-
-        throw new NotImplementedException();
+        return currentGame;
     }
 
     public Game StartNewGame(IEnumerable<string> players, bool trackPoints)
