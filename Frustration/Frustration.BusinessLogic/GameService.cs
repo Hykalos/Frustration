@@ -2,9 +2,40 @@
 
 public class GameService : IGameService
 {
-    public Game CompleteRound(Game currentGame, IEnumerable<Guid> playerCompletedRoundIds, IEnumerable<(Guid playerId, uint points)>? points)
+    public Game CompleteRound(Game currentGame, IEnumerable<PlayerRoundInfo> playerRoundInfo)
     {
-        throw new NotImplementedException();
+        if (!playerRoundInfo.Any(p => p.CompletedTask))
+            throw new ArgumentException("No players completed the round. At least one player has to complete the round.", nameof(playerRoundInfo));
+
+        if (playerRoundInfo.Count() != currentGame.Players.Count())
+            throw new ArgumentException("Player count didn't match player round info count");
+
+        if (playerRoundInfo.Any(p => !currentGame.Players.Select(player => player.Id).Contains(p.PlayerId)))
+            throw new ArgumentException("Info were given to a player who isn't part of the current game", nameof(playerRoundInfo));
+
+        if (currentGame.TrackPoints)
+        {
+            if (playerRoundInfo.Any(p => p.Score == null))
+                throw new ArgumentException("Points should be included", nameof(playerRoundInfo));
+
+            if(playerRoundInfo.Any(p => p.Score % 5 != 0))
+                throw new ArgumentException("Points were not correct. Points should always be a multiple of 5", nameof(playerRoundInfo));
+        }
+
+        foreach(var player in currentGame.Players)
+        {
+            var roundInfo = playerRoundInfo.Single(p => p.PlayerId.Equals(player.Id));
+
+            if(roundInfo.CompletedTask)
+                player.CompleteTask();
+
+            if (currentGame.TrackPoints)
+                player.IncrementScore(roundInfo.Score.Value);
+        }
+
+        currentGame.Rounds.Push(new Round(playerRoundInfo));
+
+        return currentGame;
     }
 
     public Game StartNewGame(IEnumerable<string> players, bool trackPoints)
