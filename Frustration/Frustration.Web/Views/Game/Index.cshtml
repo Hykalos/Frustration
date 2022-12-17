@@ -1,4 +1,4 @@
-﻿@model Game
+﻿@model GameIndexViewModel
 @{
     ViewData["Title"] = "Igangværende spil";
 }
@@ -10,19 +10,19 @@
         <tr>
             <th>Navn</th>
             <th>Nuværende opgave</th>
-            @if(Model.TrackPoints)
+            @if(Model.Game.TrackPoints)
             {
                 <th>Point</th>
             }
         </tr>
     </thead>
     <tbody>
-        @foreach(var player in Model.Players.OrderBy(p => p.Name))
+        @foreach(var player in Model.Game.Players.OrderBy(p => p.Name))
         {
             <tr>
                 <td>@player.Name</td>
                 <td>@player.CurrentTask</td>
-                @if(Model.TrackPoints)
+                @if(Model.Game.TrackPoints)
                 {
                     <td>@player.CurrentScore</td>
                 }
@@ -31,62 +31,69 @@
     </tbody>
 </table>
 
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#completed-round-modal">Runde gennemført</button>
+@if(!Model.GameCompleted)
+{
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#completed-round-modal">Runde gennemført</button>
 
-<div class="modal fade" id="completed-round-modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Opgør runde</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Luk"></button>
-            </div>
+    <div class="modal fade" id="completed-round-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Opgør runde</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Luk"></button>
+                </div>
 
-            <div class="modal-body">
-                <form method="post" asp-action="CompleteRound">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Spiller</th>
-                                <th>Gennemførte sin opgave?</th>
-                                @if(Model.TrackPoints)
-                                {
-                                    <th>Point</th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for(var i = 0; i < Model.Players.Count(); ++i)
-                            {
-                                var player = Model.Players.ElementAt(i);
-
-                                <input type="hidden" name="roundInfo[@i].PlayerId" value="@player.Id" />
-
+                <div class="modal-body">
+                    <form method="post" asp-action="CompleteRound">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td>@player.Name</td>
-                                    <td>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="track-points-@i" name="roundInfo[@i].CompletedTaskSwitch" />
-                                            <label class="form-check-label" for="track-points-@i">Gennemførte runden</label>
-                                        </div>
-                                    </td>
-                                    @if(Model.TrackPoints)
+                                    <th>Spiller</th>
+                                    <th>Gennemførte sin opgave?</th>
+                                    @if (Model.Game.TrackPoints)
                                     {
-                                        <td>
-                                            <input type="number" name="roundInfo[@i].Score" step="5" min="0" class="form-control" required placeholder="Point for @player.Name" />
-                                        </td>
+                                        <th>Point</th>
                                     }
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @for (var i = 0; i < Model.Game.Players.Count(); ++i)
+                                {
+                                    var player = Model.Game.Players.ElementAt(i);
 
-                    <input class="btn-success btn" type="submit" value="Gem" />
-                </form>
-            </div>
+                                    <input type="hidden" name="roundInfo[@i].PlayerId" value="@player.Id" />
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
+                                    <tr>
+                                        <td>@player.Name</td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="track-points-@i" name="roundInfo[@i].CompletedTaskSwitch" />
+                                                <label class="form-check-label" for="track-points-@i">Gennemførte runden</label>
+                                            </div>
+                                        </td>
+                                        @if (Model.Game.TrackPoints)
+                                        {
+                                            <td>
+                                                <input type="number" name="roundInfo[@i].Score" step="5" min="0" class="form-control" required placeholder="Point for @player.Name" />
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <input class="btn-success btn" type="submit" value="Gem" />
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <h2>Vinderen er: @Model.Winner.Name</h2>
+}

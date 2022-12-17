@@ -29,13 +29,41 @@ public class GameService : IGameService
             if(roundInfo.CompletedTask)
                 player.CompleteTask();
 
-            if (currentGame.TrackPoints)
+            if (currentGame.TrackPoints && roundInfo.Score != null)
                 player.IncrementScore(roundInfo.Score.Value);
         }
 
-        currentGame.Rounds.Push(new Round(playerRoundInfo));
-
         return currentGame;
+    }
+
+    public bool GameIsOver(Game currentGame, out Player? winner)
+    {
+        winner = null;
+
+        var playersWon = currentGame.Players.Where(p => p.CurrentTask >= 21);
+
+        if (!playersWon.Any())
+            return false;
+
+        if (playersWon.Count() == 1)
+            winner = playersWon.First();
+        else
+        {
+            var orderedWinners = playersWon.OrderBy(p => p.CurrentScore);
+
+            var winners = orderedWinners.Where(p => p.CurrentScore == orderedWinners.First().CurrentScore);
+
+            if (winners.Count() == 1)
+                winner = winners.First();
+            else
+            {
+                var random = new Random().Next(0, winners.Count());
+
+                winner = orderedWinners.ElementAt(random);
+            }
+        }
+
+        return true;
     }
 
     public Game StartNewGame(IEnumerable<string> players, bool trackPoints)
