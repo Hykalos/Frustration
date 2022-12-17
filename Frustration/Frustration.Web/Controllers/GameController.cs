@@ -30,7 +30,19 @@ public sealed class GameController : Controller
     {
         var game = _gameStorage.LoadGame(Request);
 
-        return View(game);
+        if(game == null)
+            return Redirect(nameof(NewGame));
+
+        var gameCompleted = _gameService.GameIsOver(game, out var winner);
+
+        var viewModel = new GameIndexViewModel
+        {
+            Game = game,
+            GameCompleted = gameCompleted,
+            Winner = winner
+        };
+
+        return View(viewModel);
     }
 
     [HttpPost]

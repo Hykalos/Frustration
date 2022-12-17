@@ -181,4 +181,78 @@ public class GameServiceTests
             Assert.That(newGameState.Players.ElementAt(2).CurrentScore, Is.EqualTo(player3CurrentScore + player3Score));
         });
     }
+
+    [Test]
+    public void GameCompletedReturnsTrueOnCompletedGame()
+    {
+        var playerRoundInfo = new List<PlayerRoundInfo>
+        {
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(0).Id,
+                CompletedTask = true,
+                Score = 0
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(1).Id,
+                CompletedTask = false,
+                Score = 200
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(2).Id,
+                CompletedTask = false,
+                Score = 250
+            }
+        };
+
+        Game gameState = _game;
+
+        for(var i = 0; i < 20; ++i)
+        {
+            gameState = _gameService.CompleteRound(gameState, playerRoundInfo);
+        }
+
+
+        var gameCompleted = _gameService.GameIsOver(gameState, out var _);
+        Assert.That(gameCompleted, Is.True);
+    }
+
+    [Test]
+    public void GameCompletedReturnsFalseOnNotCompletedGame()
+    {
+        var playerRoundInfo = new List<PlayerRoundInfo>
+        {
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(0).Id,
+                CompletedTask = true,
+                Score = 0
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(1).Id,
+                CompletedTask = false,
+                Score = 200
+            },
+            new PlayerRoundInfo
+            {
+                PlayerId = _game.Players.ElementAt(2).Id,
+                CompletedTask = false,
+                Score = 250
+            }
+        };
+
+        Game gameState = _game;
+
+        for (var i = 0; i < 19; ++i)
+        {
+            gameState = _gameService.CompleteRound(gameState, playerRoundInfo);
+        }
+
+
+        var gameCompleted = _gameService.GameIsOver(gameState, out var _);
+        Assert.That(gameCompleted, Is.False);
+    }
 }
