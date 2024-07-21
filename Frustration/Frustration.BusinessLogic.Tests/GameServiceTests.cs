@@ -34,7 +34,7 @@ public class GameServiceTests
         Assert.Multiple(() =>
         {
             Assert.That(game.Players.Count(), Is.EqualTo(3));
-            Assert.IsTrue(game.TrackPoints);
+            Assert.That(game.TrackPoints, Is.True);
         });
     }
 
@@ -51,7 +51,7 @@ public class GameServiceTests
         Assert.Multiple(() =>
         {
             Assert.That(game.Players.Count(), Is.EqualTo(3));
-            Assert.IsFalse(game.TrackPoints);
+            Assert.That(game.TrackPoints, Is.False);
         });
     }
 
